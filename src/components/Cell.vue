@@ -1,14 +1,6 @@
 <script setup lang="ts">
-import { ref } from "vue";
-import { useCellStore } from '@/stores/cells';
 
-const cellStore = useCellStore();
-
-const { step, cell} = defineProps({
-  step: {
-    type: Number,
-    default: 0
-  },
+const { cell } = defineProps({
   cell: {
     type: Object,
     default: {
@@ -18,18 +10,14 @@ const { step, cell} = defineProps({
   }
 });
 
-const color = ref(cell.color);
-
-const cellStyles = {
-  "cell": true,
-  "white": cell.color, 
-  "black": !cell.color
-};
-
 </script>
 
 <template>
-  <span :class="cellStyles"></span>
+  <span :class="{
+    cell: true,
+    white: cell.color === 1,
+    black: cell.color === 0
+  }"></span>
 </template>
 
 <style lang="css" scoped>

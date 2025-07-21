@@ -45,17 +45,15 @@ export const useCellStore = defineStore('cells', {
 
         if (i > 0) {
           cell.color = (
+            left &&
+            right &&
             left.previousColor && 
             right.previousColor && 
             cell.previousColor
             ? 1 
             : 0
           );
-        } else {
-          cell.color = cells[i + 1].previousColor && cell.previousColor ? 1 : 0;
         }
-
-        console.log(`cell ${cell.id} has color ${cell.color}`);
       });
     }
   },
