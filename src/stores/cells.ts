@@ -1,16 +1,10 @@
 import { defineStore } from 'pinia'
 
-interface CellRule {
-  (left: Cell, me: Cell, right: Cell): Cell
-}
-
 type Cell = {
   id: number,
-  color: number,
-  rules: CellRule[]
+  previousColor: number,
+  color: number
 }
-
-const rule1 = (l: Cell, r: Cell) => l.color || r.color;
 
 const cellBag = (n: number) => {
   const cells = [];
@@ -18,9 +12,9 @@ const cellBag = (n: number) => {
   for (let i = 0; i < n; i++) {
     cells.push({
       id: i,
-      color: 1,
-      rules: [rule1]
-    });
+      previousColor: i === 4 ? 0 : 1,
+      color: i === 4 ? 0 : 1
+    } as Cell);
   }
 
   return cells;
@@ -34,8 +28,35 @@ export const useCellStore = defineStore('cells', {
     }
   },
   actions: {
+    toggle (id: number) {
+      const idx = this.cells.findIndex(c => c.id === id);
+
+      if (idx > -1) {
+        this.cells[idx].color = this.cells[idx].color ? 0 : 1
+      }
+    },
     step () {
       this.stepNumber++;
+      this.cells.forEach((cell, i, cells) => {
+        const left = cells[i - 1];
+        const right = cells[i + 1];
+
+        cell.previousColor = cell.color;
+
+        if (i > 0) {
+          cell.color = (
+            left.previousColor && 
+            right.previousColor && 
+            cell.previousColor
+            ? 1 
+            : 0
+          );
+        } else {
+          cell.color = cells[i + 1].previousColor && cell.previousColor ? 1 : 0;
+        }
+
+        console.log(`cell ${cell.id} has color ${cell.color}`);
+      });
     }
   },
 })

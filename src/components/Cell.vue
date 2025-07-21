@@ -1,19 +1,31 @@
 <script setup lang="ts">
-const props = defineProps({
+import { ref } from "vue";
+import { useCellStore } from '@/stores/cells';
+
+const cellStore = useCellStore();
+
+const { step, cell} = defineProps({
   step: {
     type: Number,
     default: 0
   },
-  color: {
-    type: Number,
-    default: 1
+  cell: {
+    type: Object,
+    default: {
+      color: 1,
+      rules: []
+    }
   }
 });
 
-const cellStyles = [
-  "cell",
-  (props.color ? "white" : "black")
-];
+const color = ref(cell.color);
+
+const cellStyles = {
+  "cell": true,
+  "white": cell.color, 
+  "black": !cell.color
+};
+
 </script>
 
 <template>

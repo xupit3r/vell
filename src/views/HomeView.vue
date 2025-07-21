@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import Cell from '@/components/Cell.vue';
+import Step from '@/components/Step.vue';
 import { useCellStore } from '@/stores/cells';
-import { ref } from "vue";
 
 const cellStore = useCellStore();
 const numCells = cellStore.cells.length;
@@ -12,9 +12,10 @@ const myStyles = `
 
 <template>
   <main>
-    <cell v-for="cell in cellStore.cells"
-          :color="cell.color"
+    <cell v-for="cell, i in cellStore.cells"
+          :cell="cell"
           :step="cellStore.stepNumber" 
           :style="myStyles"/>
   </main>
+  <Step />
 </template>
