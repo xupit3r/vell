@@ -9,11 +9,16 @@ const myStyles = `
 </script>
 
 <template>
+  <div class="step">
     <Cell v-for="cell in cellStore.cells"
           :cell="cell"
           :step="cellStore.stepNumber" 
           :style="myStyles"/>
+  </div>
 </template>
 
 <style lang="css" scoped>
+  .step {
+    width: 100%;
+  }
 </style>
