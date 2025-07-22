@@ -36,7 +36,7 @@ export const useCellStore = defineStore('cells', {
       }
     },
     step () {
-      this.steps[this.stepNumber++] = this.steps[this.stepNumber - 1];
+      this.steps[++this.stepNumber] = [...this.steps[this.stepNumber - 1]];
       this.steps[this.stepNumber].forEach((cell, i, cells) => {
         const left = cells[i - 1];
         const right = cells[i + 1];
