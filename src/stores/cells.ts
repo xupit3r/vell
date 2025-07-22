@@ -43,10 +43,22 @@ export const useCellStore = defineStore('cells', {
 
         cell.previousColor = cell.color;
 
-        if (i > 0) {
+        if (i === 0) {
+          cell.color = ( 
+            right.previousColor && 
+            cell.previousColor
+            ? 1 
+            : 0
+          );
+        } else if (i === cells.length - 1) {
           cell.color = (
-            left &&
-            right &&
+            left.previousColor &&
+            cell.previousColor
+            ? 1 
+            : 0
+          );
+        } else {
+          cell.color = (
             left.previousColor && 
             right.previousColor && 
             cell.previousColor

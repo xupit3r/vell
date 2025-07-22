@@ -1,21 +1,15 @@
-<script setup lang="ts">
-import Cell from '@/components/Cell.vue';
-import Step from '@/components/Step.vue';
+<script setup>
 import { useCellStore } from '@/stores/cells';
+import Step from '@/components/Step.vue';
 
 const cellStore = useCellStore();
-const numCells = cellStore.cells.length;
-const myStyles = `
-  width: ${1/cellStore.cells.length * 100}%;
-`
+
+const doStep = () => cellStore.step();
 </script>
 
 <template>
   <main>
-    <cell v-for="cell, i in cellStore.cells"
-          :cell="cell"
-          :step="cellStore.stepNumber" 
-          :style="myStyles"/>
+    <Step />
   </main>
-  <Step />
+  <button @click="doStep">step</button>
 </template>

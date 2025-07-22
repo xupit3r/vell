@@ -1,5 +1,4 @@
-<script setup lang="ts">
-
+<script setup>
 const { cell } = defineProps({
   cell: {
     type: Object,
