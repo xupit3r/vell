@@ -9,7 +9,7 @@ const doStep = () => cellStore.step();
 
 <template>
   <main>
-    <Step />
+    <Step v-for="step in cellStore.steps" :cells="step" />
   </main>
   <button @click="doStep">step</button>
 </template>

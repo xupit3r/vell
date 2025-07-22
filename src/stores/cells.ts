@@ -24,48 +24,30 @@ export const useCellStore = defineStore('cells', {
   state: () => {
     return {
       stepNumber: 0,
-      cells: cellBag(10),
+      steps: [cellBag(10)],
     }
   },
   actions: {
     toggle (id: number) {
-      const idx = this.cells.findIndex(c => c.id === id);
+      const idx = this.steps[this.stepNumber].findIndex(c => c.id === id);
 
       if (idx > -1) {
-        this.cells[idx].color = this.cells[idx].color ? 0 : 1
+        this.steps[this.stepNumber][idx].color = this.steps[this.stepNumber][idx].color ? 0 : 1
       }
     },
     step () {
-      this.stepNumber++;
-      this.cells.forEach((cell, i, cells) => {
+      this.steps[this.stepNumber++] = this.steps[this.stepNumber - 1];
+      this.steps[this.stepNumber].forEach((cell, i, cells) => {
         const left = cells[i - 1];
         const right = cells[i + 1];
 
         cell.previousColor = cell.color;
-
-        if (i === 0) {
-          cell.color = ( 
-            right.previousColor && 
-            cell.previousColor
-            ? 1 
-            : 0
-          );
-        } else if (i === cells.length - 1) {
-          cell.color = (
-            left.previousColor &&
-            cell.previousColor
-            ? 1 
-            : 0
-          );
-        } else {
-          cell.color = (
-            left.previousColor && 
-            right.previousColor && 
-            cell.previousColor
-            ? 1 
-            : 0
-          );
-        }
+        cell.color = (
+          (cell.previousColor &&
+           (left || {}).previousColor && 
+           (right || {}).color
+          ) ? 1 : 0
+        );
       });
     }
   },

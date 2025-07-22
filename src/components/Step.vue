@@ -1,18 +1,19 @@
 <script setup>
 import Cell from '@/components/Cell.vue';
-import { useCellStore } from '@/stores/cells';
 
-const cellStore = useCellStore();
+const { cells } = defineProps({
+  cells: Array
+});
+
 const myStyles = `
-  width: ${1/cellStore.cells.length * 100}%;
+  width: ${1/cells.length * 100}%;
 `;
 </script>
 
 <template>
   <div class="step">
-    <Cell v-for="cell in cellStore.cells"
+    <Cell v-for="cell in cells"
           :cell="cell"
-          :step="cellStore.stepNumber" 
           :style="myStyles"/>
   </div>
 </template>
