@@ -12,7 +12,6 @@ const cellBag = (n: number) => {
   for (let i = 0; i < n; i++) {
     cells.push({
       id: i,
-      previousColor: i === 4 ? 0 : 1,
       color: i === 4 ? 0 : 1
     } as Cell);
   }
@@ -28,27 +27,21 @@ export const useCellStore = defineStore('cells', {
     }
   },
   actions: {
-    toggle (id: number) {
-      const idx = this.steps[this.stepNumber].findIndex(c => c.id === id);
-
-      if (idx > -1) {
-        this.steps[this.stepNumber][idx].color = this.steps[this.stepNumber][idx].color ? 0 : 1
-      }
-    },
     step () {
-      this.steps[++this.stepNumber] = [...this.steps[this.stepNumber - 1]];
-      this.steps[this.stepNumber].forEach((cell, i, cells) => {
-        const left = cells[i - 1];
-        const right = cells[i + 1];
+      this.steps[this.stepNumber + 1] = cellBag(10);
+      this.steps[this.stepNumber + 1].forEach((cell, i) => {
+        const left = this.steps[this.stepNumber][i - 1];
+        const right = this.steps[this.stepNumber][i + 1];
 
-        cell.previousColor = cell.color;
-        cell.color = (
-          (cell.previousColor &&
-           (left || {}).previousColor && 
-           (right || {}).color
-          ) ? 1 : 0
-        );
+        if (!left) {
+          cell.color = 0;
+        } else if (!right) {
+          cell.color = 0;
+        } else {
+          cell.color = !left.color || !right.color ? 0 : 1;
+        }
       });
+      this.stepNumber++;
     }
   },
 })
